@@ -16,18 +16,18 @@ public class Loan implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDate date_loan;
-    private LocalDate date_returnForecast;
-    private LocalDate date_returnReal;
+    private LocalDate dateLoan;
+    private LocalDate dateReturnForecast;
+    private LocalDate dateReturnReal;
 
     public Loan(){
     }
 
-    public Loan(Long id, LocalDate date_loan, LocalDate date_returnForecast, LocalDate date_returnReal) {
+    public Loan(Long id, LocalDate dateLoan, LocalDate dateReturnForecast, LocalDate dateReturnReal) {
         this.id = id;
-        this.date_loan = date_loan;
-        this.date_returnForecast = date_returnForecast;
-        this.date_returnReal = date_returnReal;
+        this.dateLoan = dateLoan;
+        this.dateReturnForecast = dateReturnForecast;
+        this.dateReturnReal = dateReturnReal;
     }
 
     public Long getId() {
@@ -38,28 +38,28 @@ public class Loan implements Serializable {
         this.id = id;
     }
 
-    public LocalDate getDate_loan() {
-        return date_loan;
+    public LocalDate getDateLoan() {
+        return dateLoan;
     }
 
-    public void setDate_loan(LocalDate date_loan) {
-        this.date_loan = date_loan;
+    public void setDate_loan(LocalDate dateLoan) {
+        this.dateLoan = dateLoan;
     }
 
-    public LocalDate getDate_returnForecast() {
-        return date_returnForecast;
+    public LocalDate getDateReturnForecast() {
+        return dateReturnForecast;
     }
 
-    public void setDate_returnForecast(LocalDate date_returnForecast) {
-        this.date_returnForecast = date_returnForecast;
+    public void setDateReturnForecast(LocalDate dateReturnForecast) {
+        this.dateReturnForecast = dateReturnForecast;
     }
 
-    public LocalDate getDate_returnReal() {
-        return date_returnReal;
+    public LocalDate getDateReturnReal() {
+        return dateReturnReal;
     }
 
-    public void setDate_returnReal(LocalDate date_returnReal) {
-        this.date_returnReal = date_returnReal;
+    public void setDateReturnReal(LocalDate dateReturnReal) {
+        this.dateReturnReal = dateReturnReal;
     }
 
     @Override
