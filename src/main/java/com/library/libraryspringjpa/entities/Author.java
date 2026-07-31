@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_author")
@@ -17,6 +19,9 @@ public class Author implements Serializable {
     private Long id;
     private String name;
     private String nationality;
+
+    @OneToMany(mappedBy = "author")
+    private Set<Book> books = new HashSet<>();
 
     public Author(){
     }
@@ -49,6 +54,10 @@ public class Author implements Serializable {
 
     public void setNationality(String nationality) {
         this.nationality = nationality;
+    }
+
+    public Set<Book> getBook(){
+        return books;
     }
 
     @Override

@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_book")
@@ -17,6 +19,10 @@ public class Book implements Serializable {
     private Long id;
     private String title;
     private Integer yearPublication;
+
+    @ManyToOne
+    @JoinColumn(name = "id_author")
+    private Author author;
 
     public Book(){
     }
@@ -49,6 +55,10 @@ public class Book implements Serializable {
 
     public void setYearPublication(Integer yearPublication) {
         this.yearPublication = yearPublication;
+    }
+
+    public Author getAuthor(Author author){
+        return author;
     }
 
     @Override
