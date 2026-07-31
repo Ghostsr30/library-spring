@@ -27,6 +27,9 @@ public class Book implements Serializable {
     public Book(){
     }
 
+    @OneToMany(mappedBy = "book")
+    private Set<Loan> loans = new HashSet<>();
+
     @ManyToMany
     @JoinTable(name = "tb_book_categories", joinColumns = @JoinColumn(name = "id_book"), inverseJoinColumns = @JoinColumn(name = "id_categories"))
     private Set<Category> categories = new HashSet<>();
@@ -67,6 +70,10 @@ public class Book implements Serializable {
 
     public Set<Category> getCategories(){
         return categories;
+    }
+
+    public Set<Loan> getLoans(){
+        return loans;
     }
 
     @Override

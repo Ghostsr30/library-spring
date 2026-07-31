@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_user")
@@ -20,6 +22,9 @@ public class User implements Serializable {
 
     public User(){
     }
+
+    @OneToMany(mappedBy = "user")
+    private Set<Loan> loans = new HashSet<>();
 
     public User(Long id, String name, String email) {
         this.id = id;
@@ -49,6 +54,10 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<Loan> getLoans(){
+        return loans;
     }
 
     @Override

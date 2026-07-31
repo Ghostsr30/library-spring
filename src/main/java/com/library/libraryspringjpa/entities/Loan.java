@@ -23,6 +23,14 @@ public class Loan implements Serializable {
     public Loan(){
     }
 
+    @ManyToOne
+    @JoinColumn(name = "id_book")
+    private Book book;
+
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private User user;
+
     public Loan(Long id, LocalDate dateLoan, LocalDate dateReturnForecast, LocalDate dateReturnReal) {
         this.id = id;
         this.dateLoan = dateLoan;
