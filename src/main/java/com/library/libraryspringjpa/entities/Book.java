@@ -27,6 +27,10 @@ public class Book implements Serializable {
     public Book(){
     }
 
+    @ManyToMany
+    @JoinTable(name = "tb_book_categories", joinColumns = @JoinColumn(name = "id_book"), inverseJoinColumns = @JoinColumn(name = "id_categories"))
+    private Set<Category> categories = new HashSet<>();
+
     public Book(Long id, String title, Integer yearPublication) {
         this.id = id;
         this.title = title;
@@ -59,6 +63,10 @@ public class Book implements Serializable {
 
     public Author getAuthor(Author author){
         return author;
+    }
+
+    public Set<Category> getCategories(){
+        return categories;
     }
 
     @Override
