@@ -68,6 +68,10 @@ public class Book implements Serializable {
         return author;
     }
 
+    public void setAuthor(Author author){
+        this.author = author;
+    }
+
     public Set<Category> getCategories(){
         return categories;
     }
