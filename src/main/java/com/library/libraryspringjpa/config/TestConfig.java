@@ -1,18 +1,13 @@
 package com.library.libraryspringjpa.config;
 
-import com.library.libraryspringjpa.entities.Author;
-import com.library.libraryspringjpa.entities.Book;
-import com.library.libraryspringjpa.entities.Category;
-import com.library.libraryspringjpa.entities.User;
-import com.library.libraryspringjpa.repositories.AuthorRepository;
-import com.library.libraryspringjpa.repositories.BookRepository;
-import com.library.libraryspringjpa.repositories.CategoryRepository;
-import com.library.libraryspringjpa.repositories.UserRepository;
+import com.library.libraryspringjpa.entities.*;
+import com.library.libraryspringjpa.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 
 
@@ -31,6 +26,9 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private LoanRepository loanRepository;
 
 
     @Override
@@ -76,6 +74,14 @@ public class TestConfig implements CommandLineRunner {
         User u4 = new User(null, "Beatriz Oliveira", "beatriz@gmail.com");
 
         userRepository.saveAll(Arrays.asList(u1,u2,u3,u4));
+
+        Loan l1 = new Loan(null, LocalDate.of(2026, 7, 2), LocalDate.of(2026,8,2),null);
+
+        l1.setUser(u1);
+
+        l1.setBook(b3);
+
+        loanRepository.save(l1);
 
     }
 }

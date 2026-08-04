@@ -70,6 +70,20 @@ public class Loan implements Serializable {
         this.dateReturnReal = dateReturnReal;
     }
 
+    public void setBook(Book book){
+        this.book = book;
+    }
+    public void setUser(User user){
+        this.user = user;
+    }
+
+    public Book getBook(){
+        return book;
+    }
+    public User getUser(){
+        return user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
