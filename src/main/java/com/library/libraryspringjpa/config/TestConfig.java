@@ -3,9 +3,11 @@ package com.library.libraryspringjpa.config;
 import com.library.libraryspringjpa.entities.Author;
 import com.library.libraryspringjpa.entities.Book;
 import com.library.libraryspringjpa.entities.Category;
+import com.library.libraryspringjpa.entities.User;
 import com.library.libraryspringjpa.repositories.AuthorRepository;
 import com.library.libraryspringjpa.repositories.BookRepository;
 import com.library.libraryspringjpa.repositories.CategoryRepository;
+import com.library.libraryspringjpa.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +28,9 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     @Override
@@ -64,6 +69,13 @@ public class TestConfig implements CommandLineRunner {
         b4.getCategories().add(cat3);
 
         bookRepository.saveAll(Arrays.asList(b1, b2, b3, b4));
+
+        User u1 = new User(null, "Lucas Ferreira", "lucas@gmail.com");
+        User u2 = new User(null, "Mariana Costa", "mariana@gmail.com");
+        User u3 = new User(null, "Rafael Almeida", "rafael@gmail.com");
+        User u4 = new User(null, "Beatriz Oliveira", "beatriz@gmail.com");
+
+        userRepository.saveAll(Arrays.asList(u1,u2,u3,u4));
 
     }
 }
