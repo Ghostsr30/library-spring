@@ -1,5 +1,7 @@
 package com.library.libraryspringjpa.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -20,6 +22,7 @@ public class Book implements Serializable {
     private String title;
     private Integer yearPublication;
 
+    @JsonIgnoreProperties("books")
     @ManyToOne
     @JoinColumn(name = "id_author")
     private Author author;
@@ -27,6 +30,7 @@ public class Book implements Serializable {
     public Book(){
     }
 
+    @JsonIgnore
     @OneToMany(mappedBy = "book")
     private Set<Loan> loans = new HashSet<>();
 
@@ -34,10 +38,11 @@ public class Book implements Serializable {
     @JoinTable(name = "tb_book_categories", joinColumns = @JoinColumn(name = "id_book"), inverseJoinColumns = @JoinColumn(name = "id_categories"))
     private Set<Category> categories = new HashSet<>();
 
-    public Book(Long id, String title, Integer yearPublication) {
+    public Book(Long id, String title, Integer yearPublication, Author author) {
         this.id = id;
         this.title = title;
         this.yearPublication = yearPublication;
+        this.author = author;
     }
 
     public Long getId() {
@@ -64,7 +69,7 @@ public class Book implements Serializable {
         this.yearPublication = yearPublication;
     }
 
-    public Author getAuthor(Author author){
+    public Author getAuthor(){
         return author;
     }
 

@@ -1,5 +1,6 @@
 package com.library.libraryspringjpa.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -23,6 +24,7 @@ public class User implements Serializable {
     public User(){
     }
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private Set<Loan> loans = new HashSet<>();
 

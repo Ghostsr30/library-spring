@@ -1,5 +1,6 @@
 package com.library.libraryspringjpa.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -20,6 +21,8 @@ public class Author implements Serializable {
     private String name;
     private String nationality;
 
+
+    @JsonIgnoreProperties("author")
     @OneToMany(mappedBy = "author")
     private Set<Book> books = new HashSet<>();
 
@@ -56,7 +59,7 @@ public class Author implements Serializable {
         this.nationality = nationality;
     }
 
-    public Set<Book> getBook(){
+    public Set<Book> getBooks(){
         return books;
     }
 

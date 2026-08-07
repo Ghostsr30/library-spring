@@ -47,15 +47,10 @@ public class TestConfig implements CommandLineRunner {
         authorRepository.saveAll(Arrays.asList(at1, at2, at3, at4));
         categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4));
 
-        Book b1 = new Book(null, "November '63", 1996);
-        Book b2 = new Book(null, "The Fellowship of the Ring", 1954);
-        Book b3 = new Book(null, "Harry Potter and the Philosopher's Stone", 1997);
-        Book b4 = new Book(null, "Percy Jackson & The Olympians: The Lightning Thief", 2005);
-
-        b1.setAuthor(at1);
-        b2.setAuthor(at2);
-        b3.setAuthor(at3);
-        b4.setAuthor(at4);
+        Book b1 = new Book(null, "November '63", 1996, at1);
+        Book b2 = new Book(null, "The Fellowship of the Ring", 1954, at2);
+        Book b3 = new Book(null, "Harry Potter and the Philosopher's Stone", 1997, at3);
+        Book b4 = new Book(null, "Percy Jackson & The Olympians: The Lightning Thief", 2005, at4);
 
         b1.getCategories().add(cat1);
         b1.getCategories().add(cat2);
