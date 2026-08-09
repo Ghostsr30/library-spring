@@ -61,11 +61,17 @@ On startup (test profile), the application automatically seeds the database with
 📌 Main endpoints
 
 Method	Endpoint	Description
+
 GET	/authors	List all authors
+
 GET	/books	List all books
+
 GET	/books/{id}	Get a book by id
+
 GET	/categories	List all categories
+
 GET	/users	List all users
+
 GET	/loan	List all loans
 
 (Same pattern of GET/POST/PUT/DELETE applies to the other entities.)
