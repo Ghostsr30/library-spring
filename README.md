@@ -64,9 +64,9 @@ Method	Endpoint	Description
 
 GET	/authors	List all authors
 
-GET	/books	List all books
+GET	/book	List all books
 
-GET	/books/{id}	Get a book by id
+GET	/book/{id}	Get a book by id
 
 GET	/categories	List all categories
 
