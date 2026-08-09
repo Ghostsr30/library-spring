@@ -20,13 +20,16 @@ H2 Database (in-memory)
 Maven
 
 🗂️ Entities
+
 Entity	Description
 Author	Book author (name, nationality)
 Book	Book (title, publication year) — belongs to one Author and can have several Category entries
 Category	Book category (e.g. Fantasy, Romance)
 User	Library user (name, email)
 Loan	Represents a loan event, linking a User to a Book, with loan date, expected return date, and actual return date
+
 🔗 Relationships
+
 Book → Author: many books can belong to the same author (@ManyToOne)
 Book ↔ Category: a book can have several categories, and a category can belong to several books (@ManyToMany, with a join table)
 Loan → Book / Loan → User: each loan references one book and one user (two @ManyToOne relationships), representing a real-world lending event that couldn't be modeled as a simple many-to-many, since it needs to carry its own dates
