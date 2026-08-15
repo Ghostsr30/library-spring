@@ -22,4 +22,24 @@ public class LoanService {
         Optional<Loan> obj = repository.findById(id);
         return obj.get();
     }
+
+    public Loan insert(Loan obj) {
+        return repository.save(obj);
+    }
+
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+
+    public Loan update(Long id, Loan obj) {
+        Loan entity = repository.getReferenceById(id);
+        updateData(entity, obj);
+        return repository.save(entity);
+    }
+
+    private void updateData(Loan entity, Loan obj) {
+        entity.setDate_loan(obj.getDateLoan());
+        entity.setDateReturnForecast(obj.getDateReturnForecast());
+        entity.setDateReturnReal(obj.getDateReturnReal());
+    }
 }

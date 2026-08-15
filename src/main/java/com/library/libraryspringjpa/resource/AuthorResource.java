@@ -4,10 +4,7 @@ import com.library.libraryspringjpa.entities.Author;
 import com.library.libraryspringjpa.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +25,24 @@ public class AuthorResource {
     public ResponseEntity<Author> findById(@PathVariable Long id){
         Author obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
+    }
+
+    @PostMapping
+    public ResponseEntity<Author> insert(@RequestBody Author obj) {
+        Author newObj = service.insert(obj);
+        return ResponseEntity.ok().body(newObj);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Author> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Author> update(@PathVariable Long id, @RequestBody Author obj) {
+        Author newObj = service.update(id, obj);
+        return ResponseEntity.ok().body(newObj);
     }
 
 }

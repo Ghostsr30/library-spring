@@ -24,4 +24,22 @@ public class BookService {
         return obj.get();
     }
 
+    public Book insert(Book obj) {
+        return repository.save(obj);
+    }
+
+    public Book update(Long id, Book obj) {
+        Book entity = repository.getReferenceById(id);
+        updateData(entity, obj);
+        return repository.save(entity);
+    }
+
+    private void updateData(Book entity, Book obj) {
+        entity.setTitle(obj.getTitle());
+        entity.setYearPublication(obj.getYearPublication());
+    }
+
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
 }
