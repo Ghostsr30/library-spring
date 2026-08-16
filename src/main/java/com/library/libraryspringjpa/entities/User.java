@@ -66,32 +66,32 @@ public class User implements Serializable, UserDetails {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
-    public String getPassword() {
+    public String getPassword() { //retorna a senha do usuario
         return password;
     }
 
     @Override
-    public String getUsername() {
+    public String getUsername() { //retorna o email do usuario
         return email;
     }
 
     @Override
-    public boolean isAccountNonExpired() {
+    public boolean isAccountNonExpired() { //verifica se a conta do usuario não expirou
         return true;
     }
 
     @Override
-    public boolean isAccountNonLocked() {
+    public boolean isAccountNonLocked() { //verifica se a conta do usuario não está bloqueada
         return true;
     }
 
     @Override
-    public boolean isCredentialsNonExpired() {
+    public boolean isCredentialsNonExpired() { //verifica se as credenciais do usuario não expiraram
         return true;
     }
 
     @Override
-    public boolean isEnabled() {
+    public boolean isEnabled() { //verifica se a conta do usuario está habilitada
         return true;
     }
 
