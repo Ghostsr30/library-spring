@@ -1,6 +1,7 @@
 package com.library.libraryspringjpa.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,6 +30,13 @@ public class User implements Serializable, UserDetails {
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private Set<Loan> loans = new HashSet<>();
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "tb_user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JsonManagedReference
+    private Set<Role> roles = new HashSet<>();
+
 
     public User(Long id, String name, String email, String password) {
         this.id = id;
@@ -61,9 +69,13 @@ public class User implements Serializable, UserDetails {
         this.email = email;
     }
 
+    public Set<Role> getRoles(){
+        return roles;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return roles;
     }
 
     public String getPassword() { //retorna a senha do usuario

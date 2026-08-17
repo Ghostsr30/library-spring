@@ -16,7 +16,7 @@ public class JwtUtils {
     @Value("${jwt.secret}") //pega o valor do .properties e coloca aqui na classe
     private String jwtSecret;
 
-    @Value("${jwt.expirationMs}") //expiração do token
+    @Value("${jwt.expiration}") //expiração do token
     private int jwtExpirationMs;
 
     private @NonNull SecretKey getSigningKey(){ //transforma a senha em uma chave hash que só o spring conhece

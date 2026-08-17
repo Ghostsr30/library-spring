@@ -4,15 +4,11 @@ import com.library.libraryspringjpa.entities.*;
 import com.library.libraryspringjpa.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 
-
-@Configuration
-@Profile("dev")
 public class TestConfig implements CommandLineRunner {
 
     @Autowired
@@ -29,6 +25,13 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     private LoanRepository loanRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
 
     @Override
@@ -63,12 +66,27 @@ public class TestConfig implements CommandLineRunner {
 
         bookRepository.saveAll(Arrays.asList(b1, b2, b3, b4));
 
-        User u1 = new User(null, "Lucas Ferreira", "lucas@gmail.com", "lucas5676");
-        User u2 = new User(null, "Mariana Costa", "mariana@gmail.com", "mariana123");
-        User u3 = new User(null, "Rafael Almeida", "rafael@gmail.com", "rafael456");
-        User u4 = new User(null, "Beatriz Oliveira", "beatriz@gmail.com", "beatriz789");
+        Role roleUser = new Role(null, RoleName.USER);
+        Role roleAdmin = new Role(null, RoleName.ADMIN);
+
+        roleRepository.saveAll(Arrays.asList(roleUser, roleAdmin));
+
+        User u1 = new User(null, "Lucas Ferreira", "lucas@gmail.com", null);
+        User u2 = new User(null, "Mariana Costa", "mariana@gmail.com", null);
+        User u3 = new User(null, "Rafael Almeida", "rafael@gmail.com", null);
+        User u4 = new User(null, "Beatriz Oliveira", "beatriz@gmail.com", null);
+        User u5 = new User(null, "Luan Vedovoto", "luan@gmail.com", null);
+
+        u1.setPassword(passwordEncoder.encode("lucas5676"));
+        u2.setPassword(passwordEncoder.encode("mariana123"));
+        u3.setPassword(passwordEncoder.encode("rafael456"));
+        u4.setPassword(passwordEncoder.encode("beatriz789"));
+        u5.setPassword(passwordEncoder.encode("luan1234"));
+
+        u5.getRoles().add(roleAdmin);
 
         userRepository.saveAll(Arrays.asList(u1,u2,u3,u4));
+
 
         Loan l1 = new Loan(null, LocalDate.of(2026, 7, 2), LocalDate.of(2026,8,2),null);
 
@@ -77,6 +95,5 @@ public class TestConfig implements CommandLineRunner {
         l1.setBook(b3);
 
         loanRepository.save(l1);
-
     }
 }

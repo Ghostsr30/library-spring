@@ -50,12 +50,32 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //cada sessão se autentica sozinha, não guarda nada no servidor
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login").permitAll() //todo mundo tem acesso a rota de login
-                        .requestMatchers(HttpMethod.GET, "/book/**", "/authors/**", "/categories/**").authenticated()  //qualquer um que esteja logado consegue usar
-                        .requestMatchers(HttpMethod.GET , "/book/**","/authors/**", "/categories/**", "/loan/**", "/users/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST , "/book/**","/authors/**", "/categories/**", "/loan/**", "/users/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT , "/book/**","/authors/**", "/categories/**", "/loan/**", "/users/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE , "/book/**","/authors/**", "/categories/**", "/loan/**", "/users/**").hasRole("ADMIN") //só o admin tem acesso
+                        .requestMatchers("/auth/login", "/auth/register").permitAll() //todo mundo tem acesso a rota de login
+                        .requestMatchers(HttpMethod.GET, "/book/**",
+                                "/book",
+                                "/author",
+                                "/categories",
+                                "/author/**",
+                                "/categories/**").authenticated()  //qualquer um que esteja logado consegue usar
+                        .requestMatchers(HttpMethod.GET , "/loan/**",
+                                "/loan",
+                                "/users",
+                                "/users/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST , "/book/**",
+                                "/author/**",
+                                "/categories/**",
+                                "/loan/**",
+                                "/users/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT , "/book/**",
+                                "/author/**",
+                                "/categories/**",
+                                "/loan/**",
+                                "/users/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE , "/book/**",
+                                "/author/**",
+                                "/categories/**",
+                                "/loan/**",
+                                "/users/**").hasRole("ADMIN") //só o admin tem acesso
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
