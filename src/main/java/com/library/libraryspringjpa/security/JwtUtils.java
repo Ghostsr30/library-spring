@@ -4,6 +4,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +26,10 @@ public class JwtUtils {
 
     public String generateToken(@NonNull UserDetails userDetails){ //recebe um usuario
         return Jwts.builder()
-                .subject(userDetails.getUsername()) //coloca o email do usuario dentro do payload do token
+                .subject(userDetails.getUsername())//coloca o email do usuario dentro do payload do token
+                .claim("roles", userDetails.getAuthorities().stream()//adiciona um campo no payload
+                        .map(GrantedAuthority::getAuthority)
+                        .toList())//extrai o nome dos rolesz
                 .issuedAt(new Date()) //marca quando o token foi criado
                 .expiration(new Date(System.currentTimeMillis() + jwtExpirationMs)) //marca quando o token vai expirar
                 .signWith(getSigningKey()) //assina o token com a chave hash
