@@ -1,5 +1,6 @@
 package com.library.libraryspringjpa.service;
 
+import com.library.libraryspringjpa.DTO.CategoryDTO;
 import com.library.libraryspringjpa.entities.Category;
 import com.library.libraryspringjpa.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,12 @@ public class CategoryService {
 
     @Autowired
     private CategoryRepository repository;
+
+    public Category fromDTO(CategoryDTO dto){
+        Category cat = new Category();
+        cat.setName(dto.getName());
+        return cat;
+    }
 
     public List<Category> findAll(){
         return repository.findAll();
