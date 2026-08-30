@@ -1,7 +1,5 @@
 package com.library.libraryspringjpa.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -52,7 +50,7 @@ public class Loan implements Serializable {
         return dateLoan;
     }
 
-    public void setDate_loan(LocalDate dateLoan) {
+    public void setDateLoan(LocalDate dateLoan) {
         this.dateLoan = dateLoan;
     }
 
