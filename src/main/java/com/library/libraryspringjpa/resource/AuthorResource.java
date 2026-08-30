@@ -1,11 +1,14 @@
 package com.library.libraryspringjpa.resource;
 
+import com.library.libraryspringjpa.DTO.AuthorDTO;
 import com.library.libraryspringjpa.entities.Author;
 import com.library.libraryspringjpa.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -16,33 +19,37 @@ public class AuthorResource {
     private AuthorService service;
 
     @GetMapping
-    public ResponseEntity<List<Author>> findAll(){
+    public ResponseEntity<List<AuthorDTO>> findAll(){
         List<Author>list = service.findAll();
-        return ResponseEntity.ok().body(list);
+        List<AuthorDTO> listDto = list.stream().map(AuthorDTO::new).toList();
+        return ResponseEntity.ok().body(listDto);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Author> findById(@PathVariable Long id){
+    public ResponseEntity<AuthorDTO> findById(@PathVariable Long id){
         Author obj = service.findById(id);
-        return ResponseEntity.ok().body(obj);
+        return ResponseEntity.ok().body(new AuthorDTO(obj));
     }
 
     @PostMapping
-    public ResponseEntity<Author> insert(@RequestBody Author obj) {
-        Author newObj = service.insert(obj);
-        return ResponseEntity.ok().body(newObj);
+    public ResponseEntity<AuthorDTO> insert(@RequestBody AuthorDTO dto) {
+        Author newObj = service.fromDTO(dto);
+        newObj = service.insert(newObj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId()).toUri();
+        return ResponseEntity.created(uri).body(new AuthorDTO(newObj));
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Author> delete(@PathVariable Long id) {
+    public ResponseEntity<AuthorDTO> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Author> update(@PathVariable Long id, @RequestBody Author obj) {
-        Author newObj = service.update(id, obj);
-        return ResponseEntity.ok().body(newObj);
+    public ResponseEntity<AuthorDTO> update(@PathVariable Long id, @RequestBody AuthorDTO dto) {
+        Author obj = service.fromDTO(dto);
+        obj = service.update(id, obj);
+        return ResponseEntity.ok().body(new AuthorDTO(obj));
     }
 
 }

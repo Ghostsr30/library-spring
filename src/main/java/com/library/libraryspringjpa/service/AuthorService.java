@@ -1,5 +1,6 @@
 package com.library.libraryspringjpa.service;
 
+import com.library.libraryspringjpa.DTO.AuthorDTO;
 import com.library.libraryspringjpa.entities.Author;
 import com.library.libraryspringjpa.repositories.AuthorRepository;
 import com.library.libraryspringjpa.service.exceptions.DatabaseException;
@@ -19,6 +20,13 @@ public class AuthorService {
     @Autowired
     private AuthorRepository repository;
 
+
+    public Author fromDTO(AuthorDTO dto){
+        Author author = new Author();
+        author.setName(dto.getName());
+        author.setNationality(dto.getNationality());
+        return author;
+    }
 
     public List<Author>findAll(){
         return repository.findAll();
