@@ -1,5 +1,7 @@
 package com.library.libraryspringjpa.resource;
 
+import com.library.libraryspringjpa.DTO.UserDTO;
+import com.library.libraryspringjpa.DTO.UserUpdateDTO;
 import com.library.libraryspringjpa.entities.User;
 import com.library.libraryspringjpa.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +20,16 @@ public class UserResource {
     private UserService service;
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll(){
+    public ResponseEntity<List<UserDTO>> findAll(){
         List<User> list = service.findAll();
-        return ResponseEntity.ok().body(list);
+        List<UserDTO> listDto = list.stream().map(UserDTO::new).toList();
+        return ResponseEntity.ok().body(listDto);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id){
+    public ResponseEntity<UserDTO> findById(@PathVariable Long id){
         User obj = service.findById(id);
-        return ResponseEntity.ok().body(obj);
+        return ResponseEntity.ok().body(new UserDTO(obj));
     }
 
 
@@ -37,9 +40,9 @@ public class UserResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User obj){
-        obj = service.update(id, obj);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody UserUpdateDTO dto){
+        User obj = service.update(id, dto);
+        return ResponseEntity.ok().body(new UserDTO(obj));
     }
 
 }

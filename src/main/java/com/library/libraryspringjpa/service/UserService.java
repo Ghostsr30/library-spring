@@ -1,5 +1,6 @@
 package com.library.libraryspringjpa.service;
 
+import com.library.libraryspringjpa.DTO.UserUpdateDTO;
 import com.library.libraryspringjpa.entities.User;
 import com.library.libraryspringjpa.repositories.UserRepository;
 import com.library.libraryspringjpa.service.exceptions.DatabaseException;
@@ -38,18 +39,15 @@ public class UserService {
         }
     }
 
-    public User update(Long id, User obj){
+    public User update(Long id, UserUpdateDTO dto){
         try {
             User entity = repository.getReferenceById(id);
-            updateData(entity, obj);
+            entity.setName(dto.getName());
+            entity.setEmail(dto.getEmail());
             return repository.save(entity);
         }catch(EntityNotFoundException e){
             throw new ResourceNotFoundException(id);
         }
     }
 
-    private void updateData(User entity, User obj) {
-        entity.setName(obj.getName());
-        entity.setEmail(obj.getEmail());
-    }
 }
