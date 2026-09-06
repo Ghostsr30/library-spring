@@ -1,38 +1,51 @@
 📚 Library Spring
 
-A RESTful API for a library management system, built with Java and Spring Boot to practice JPA relationships, layered architecture, and exception handling.
+A RESTful API for a library management system, built with Java and Spring Boot. Started as a way to practice JPA relationships, and evolved into a full-featured API with layered architecture, DTOs, exception handling, and JWT-based authentication with role-based authorization.
 
 💡 About the project
 
-This project was built to train and consolidate concepts of Spring Data JPA / Hibernate, focusing on the three main types of entity associations:
+This project began as a training ground for Spring Data JPA / Hibernate relationships, and grew into a more complete backend application covering:
 
-@ManyToOne — Book ↔ Author
-@ManyToMany — Book ↔ Category
-Association entity — Loan, connecting User and Book, carrying its own data (loan date, expected return date, actual return date)
-
-Besides the data modeling, the project implements a full REST API with a layered architecture (Repository → Service → Resource), complete CRUD operations, and proper exception handling for common scenarios (entity not found, deleting an entity with dependent records, etc).
+Entity relationships — @ManyToOne, @ManyToMany, and an association entity (Loan) that couldn't be modeled as a simple join table since it carries its own data
+Layered architecture — Repository → Service → Resource, with a clear separation of responsibilities
+DTO pattern — request and response DTOs separate the API's public contract from the JPA entities, avoiding infinite serialization loops and preventing clients from controlling fields they shouldn't (like a user's role on registration)
+Authentication & authorization — JWT-based login, password hashing with BCrypt, and role-based access control (USER / ADMIN)
+Exception handling — custom exceptions for common scenarios (resource not found, deleting an entity with dependent records)
+Bean Validation — request DTOs validate incoming data before it reaches the service layer
 
 🛠️ Technologies
 Java
 Spring Boot
 Spring Data JPA / Hibernate
-H2 Database (in-memory)
+Spring Security + JWT
+Bean Validation
+MySQL
 Maven
 
 🗂️ Entities
-
 Entity	Description
 Author	Book author (name, nationality)
 Book	Book (title, publication year) — belongs to one Author and can have several Category entries
 Category	Book category (e.g. Fantasy, Romance)
-User	Library user (name, email)
+User	Library user (name, email, password, roles)
 Loan	Represents a loan event, linking a User to a Book, with loan date, expected return date, and actual return date
+Role	Authorization role (USER or ADMIN) assigned to a User
 
 🔗 Relationships
-
 Book → Author: many books can belong to the same author (@ManyToOne)
 Book ↔ Category: a book can have several categories, and a category can belong to several books (@ManyToMany, with a join table)
-Loan → Book / Loan → User: each loan references one book and one user (two @ManyToOne relationships), representing a real-world lending event that couldn't be modeled as a simple many-to-many, since it needs to carry its own dates
+Loan → Book / Loan → User: each loan references one book and one user (two @ManyToOne relationships), representing a real-world lending event that needed its own entity to carry loan/return dates
+User ↔ Role: a user can hold one or more roles (@ManyToMany)
+
+🔐 Authentication & Authorization
+
+The API uses JWT for stateless authentication:
+
+A new user registers via POST /auth/register — the password is hashed with BCrypt before being stored, and the account is always assigned the USER role by default (role escalation is never accepted from client input)
+A user logs in via POST /auth/login, receiving a signed JWT token
+The token must be sent on subsequent requests in the Authorization: Bearer <token> header
+Routes are protected based on role: read operations (GET) require authentication, while write operations (POST/PUT/DELETE) require the ADMIN role
+
 🚀 Running the project
 bash
 # Clone the repository
@@ -46,41 +59,47 @@ cd library-spring
 
 The application will start on http://localhost:8080.
 
-H2 Console
+Database
 
-With the app running, access the in-memory database console at:
+The project uses MySQL. Create a database and set the following environment variables before running:
 
-http://localhost:8080/h2-console
-JDBC URL: jdbc:h2:mem:libraryjpa
-User: sa
-Password: (leave empty)
+DB_PASSWORD=your_mysql_password
+JWT_SECRET=your_jwt_secret_key
+
+The connection details (URL, username) are configured in application.properties.
+
 Test data
 
-On startup (test profile), the application automatically seeds the database with sample authors, categories, books, users, and loans, so the API can be explored right away.
+On startup (dev profile), the application seeds the database with sample authors, categories, books, users, roles, and loans, so the API can be explored right away.
 
 📌 Main endpoints
+Method	Endpoint	Description	Access
 
-Method	Endpoint	Description
+POST	/auth/register	Register a new user	Public
 
-GET	/authors	List all authors
+POST	/auth/login	Log in and receive a JWT token	Public
 
-GET	/book	List all books
+GET	/books	List all books	Authenticated
 
-GET	/book/{id}	Get a book by id
+GET	/books/{id}	Get a book by id	Authenticated
 
-GET	/categories	List all categories
+POST	/books	Create a new book	Admin
 
-GET	/users	List all users
+PUT	/books/{id}	Update a book	Admin
 
-GET	/loan	List all loans
+DELETE	/books/{id}	Delete a book	Admin
 
-(Same pattern of GET/POST/PUT/DELETE applies to the other entities.)
+GET	/authors, /categories, /users, /loans	List resources	Authenticated
+
+(Same read/write access pattern applies across the other entities.)
 
 🧩 What I learned building this
 The practical difference between @ManyToOne, @ManyToMany, and when a relationship needs to become its own entity instead of a simple join table
-How Hibernate translates object relationships into foreign keys and join tables automatically
-Structuring an application in layers (Repository, Service, Resource) and why each layer has a single responsibility
-Replacing unsafe Optional.get() calls with proper exception handling (orElseThrow)
-Handling delete operations safely when an entity has dependent records
+Why exposing JPA entities directly through a REST API is a bad idea, and how the DTO pattern solves both the infinite-loop serialization problem and unwanted client control over sensitive fields
+How JWT authentication actually works under the hood — token structure, signing, and why a stateless API shouldn't rely on server-side sessions
+The difference between authentication ("who are you") and authorization ("what can you do"), and how to enforce both with Spring Security
+Why passwords must be hashed (never encrypted) and how BCrypt's salting protects against rainbow-table attacks
+Replacing unsafe Optional.get() calls with proper exception handling (orElseThrow), and using specific exception types instead of generic catch (Exception e) blocks
+Keeping secrets (database password, JWT signing key) out of version control using environment variables
 
 Built by Luan Vedovoto as a portfolio project.
