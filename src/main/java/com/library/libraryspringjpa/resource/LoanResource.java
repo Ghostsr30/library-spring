@@ -4,6 +4,7 @@ import com.library.libraryspringjpa.DTO.LoanDTO;
 import com.library.libraryspringjpa.DTO.LoanInsertDTO;
 import com.library.libraryspringjpa.entities.Loan;
 import com.library.libraryspringjpa.service.LoanService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,37 +35,24 @@ public class LoanResource {
     }
 
     @PostMapping
-    public ResponseEntity<LoanDTO> insert(@RequestBody LoanInsertDTO dto) {
-        try {
+    public ResponseEntity<LoanDTO> insert(@Valid @RequestBody LoanInsertDTO dto) {
             Loan newObj = service.fromDto(dto);
             newObj = service.insert(newObj);
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId()).toUri();
             return ResponseEntity.created(uri).body(new LoanDTO(newObj));
-        }catch(Exception e){
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        try {
             service.delete(id);
             return ResponseEntity.noContent().build();
-        }catch(Exception e){
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<LoanDTO> update(@PathVariable Long id, @RequestBody LoanInsertDTO dto) {
-        try {
             Loan newObj = service.fromDto(dto);
             newObj = service.update(id, newObj);
             return ResponseEntity.ok().body(new LoanDTO(newObj));
-        }
-        catch(Exception e){
-            return ResponseEntity.badRequest().build();
-        }
     }
 
 }

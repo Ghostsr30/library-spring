@@ -3,6 +3,7 @@ package com.library.libraryspringjpa.resource;
 import com.library.libraryspringjpa.DTO.CategoryDTO;
 import com.library.libraryspringjpa.entities.Category;
 import com.library.libraryspringjpa.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class CategoryResource {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> insert(@RequestBody CategoryDTO dto) {
+    public ResponseEntity<CategoryDTO> insert(@Valid @RequestBody CategoryDTO dto) {
         Category newObj = service.fromDTO(dto);
         newObj = service.insert(newObj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId()).toUri();

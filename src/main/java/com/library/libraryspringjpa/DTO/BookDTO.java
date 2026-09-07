@@ -1,6 +1,8 @@
 package com.library.libraryspringjpa.DTO;
 
 import com.library.libraryspringjpa.entities.Book;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
 
 public class BookDTO {
 

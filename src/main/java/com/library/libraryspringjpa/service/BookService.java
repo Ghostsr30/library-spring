@@ -7,8 +7,12 @@ import com.library.libraryspringjpa.entities.Category;
 import com.library.libraryspringjpa.repositories.AuthorRepository;
 import com.library.libraryspringjpa.repositories.BookRepository;
 import com.library.libraryspringjpa.repositories.CategoryRepository;
+import com.library.libraryspringjpa.service.exceptions.DatabaseException;
 import com.library.libraryspringjpa.service.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -58,9 +62,14 @@ public class BookService {
     }
 
     public Book update(Long id, Book obj) {
-        Book entity = repository.getReferenceById(id);
-        updateData(entity, obj);
-        return repository.save(entity);
+        try {
+            Book entity = repository.getReferenceById(id);
+            updateData(entity, obj);
+            return repository.save(entity);
+        }
+        catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     private void updateData(Book entity, Book obj) {
@@ -72,6 +81,14 @@ public class BookService {
     }
 
     public void delete(Long id) {
-        repository.deleteById(id);
+        try {
+            repository.deleteById(id);
+        }
+        catch (EmptyResultDataAccessException e){
+            throw new ResourceNotFoundException(id);
+        }
+        catch (DataIntegrityViolationException e){
+            throw new DatabaseException(e.getMessage());
+        }
     }
 }

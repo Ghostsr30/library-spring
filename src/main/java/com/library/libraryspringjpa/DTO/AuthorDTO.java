@@ -1,11 +1,16 @@
 package com.library.libraryspringjpa.DTO;
 
 import com.library.libraryspringjpa.entities.Author;
+import jakarta.validation.constraints.NotBlank;
 
 public class AuthorDTO {
 
     private Long id;
+
+    @NotBlank(message = "Name it cannot null")
     private String name;
+
+    @NotBlank(message = "Nationality it cannot null")
     private String nationality;
 
     public AuthorDTO(){

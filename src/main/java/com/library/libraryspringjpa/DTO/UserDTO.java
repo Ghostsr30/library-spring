@@ -1,11 +1,14 @@
 package com.library.libraryspringjpa.DTO;
 
 import com.library.libraryspringjpa.entities.User;
+import jakarta.validation.constraints.NotBlank;
 
 public class UserDTO {
 
 
     private Long id;
+
+
     private String name;
     private String email;
     private String password;

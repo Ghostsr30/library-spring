@@ -3,6 +3,7 @@ package com.library.libraryspringjpa.resource;
 import com.library.libraryspringjpa.DTO.AuthorDTO;
 import com.library.libraryspringjpa.entities.Author;
 import com.library.libraryspringjpa.service.AuthorService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class AuthorResource {
     }
 
     @PostMapping
-    public ResponseEntity<AuthorDTO> insert(@RequestBody AuthorDTO dto) {
+    public ResponseEntity<AuthorDTO> insert(@Valid @RequestBody AuthorDTO dto) {
         Author newObj = service.fromDTO(dto);
         newObj = service.insert(newObj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId()).toUri();
